@@ -18,9 +18,9 @@ namespace WebApiAutores.Controllers
         [HttpGet]
         [HttpGet("listado")] // api/autores/listado
         [HttpGet("/listado")] //listado
-        public List<Autor> Get()
+        public async Task<List<Autor>> Get()
         {
-            return context.Autores.Include(x => x.Libros).ToList();
+            return await context.Autores.Include(x => x.Libros).ToListAsync();
         }
 
         [HttpGet("primero")] // api/autores/primero
@@ -30,9 +30,9 @@ namespace WebApiAutores.Controllers
         }
 
         [HttpGet("{id:int}/{param2=persona}")]
-        public <ActionResult<Autor> Get(int id)
+        public async Task<ActionResult<Autor>> Get(int id, string param2)
         {
-            var autor = await context.Autores.FirstOrDefault(x => x.Id == id);
+            var autor = await context.Autores.FirstOrDefaultAsync(x => x.Id == id);
             if (autor == null)
             {
                 return NotFound();
