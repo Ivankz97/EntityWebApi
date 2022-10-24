@@ -20,8 +20,11 @@ namespace WebApiAutores
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
 
-            services.AddSingleton<IService, ServicioA>();
-            //services.AddTransient<ServicioA>();
+            services.AddTransient<IService, ServicioA>();
+            
+            services.AddTransient<ServicioTransient>();
+            services.AddScoped<ServicioScoped>();
+            services.AddSingleton<ServicioSingleton>();
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();

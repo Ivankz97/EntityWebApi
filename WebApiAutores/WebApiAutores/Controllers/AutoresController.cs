@@ -11,11 +11,33 @@ namespace WebApiAutores.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IService servicio;
+        private readonly ServicioTransient servicioTransient;
+        private readonly ServicioScoped servicioScoped;
+        private readonly ServicioSingleton servicioSingleton;
 
-        public AutoresController(ApplicationDbContext context, IService servicio)
+        public AutoresController(ApplicationDbContext context, IService servicio, 
+            ServicioTransient servicioTransient, ServicioScoped servicioScoped, 
+            ServicioSingleton servicioSingleton)
         {
             this.context = context;
             this.servicio = servicio;
+            this.servicioTransient = servicioTransient;
+            this.servicioScoped = servicioScoped;
+            this.servicioSingleton = servicioSingleton;
+        }
+
+        [HttpGet("GUID")]
+        public ActionResult ObtenerGuids()
+        {
+            return Ok(new
+            {
+                AutoresControllerTransient = servicioTransient.Guid,
+                ServicioA_Transient = servicio.ObtenerTransient(),
+                AutoresControllerScoped = servicioScoped.Guid,
+                ServicioA_Scoped = servicio.ObtenerScoped(),
+                AutoresControllerSingleton = servicioSingleton.Guid,
+                servicioA_Singleton = servicio.ObtenerSingleton()
+            });
         }
 
         [HttpGet]
